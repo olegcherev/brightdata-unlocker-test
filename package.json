@@ -1,0 +1,30 @@
+{
+  "name": "brightdata-unlocker-test",
+  "version": "1.0.0",
+  "description": "Test script for Bright Data Unlocker API and native proxy access",
+  "main": "test-brightdata-proxy.js",
+  "bin": {
+    "test-brightdata-proxy": "./test-brightdata-proxy.js"
+  },
+  "scripts": {
+    "test": "node test-brightdata-proxy.js",
+    "test:api": "node test-brightdata-proxy.js --unlocker-api",
+    "test:native": "node test-brightdata-proxy.js --unlocker-native"
+  },
+  "keywords": [
+    "brightdata",
+    "unlocker",
+    "proxy",
+    "cloudflare",
+    "scraping"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "https-proxy-agent": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

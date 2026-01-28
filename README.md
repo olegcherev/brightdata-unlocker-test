@@ -26,7 +26,9 @@ export BRIGHT_DATA_UNLOCKER_PROXY_PASSWORD="your_password"
 
 ## Usage
 
-### Unlocker API (REST, recommended)
+### CLI Mode
+
+#### Unlocker API (REST, recommended)
 
 ```bash
 # Default mode (uses API)
@@ -39,7 +41,7 @@ node test-brightdata-proxy.js --unlocker-api https://forum.opencart.com/feed/for
 npm run test:api https://forum.opencart.com/feed/forum/2
 ```
 
-### Native Proxy Access
+#### Native Proxy Access
 
 ```bash
 # Native proxy with Unlocker zone
@@ -47,6 +49,80 @@ node test-brightdata-proxy.js --unlocker-native https://forum.opencart.com/feed/
 
 # Or use npm script
 npm run test:native https://forum.opencart.com/feed/forum/2
+```
+
+### Web Service Mode (for Render.com)
+
+Start the server:
+
+```bash
+npm start
+```
+
+The server will run on port 3000 (or PORT environment variable).
+
+#### API Endpoints
+
+**Health Check:**
+```bash
+GET /health
+```
+
+**Test Endpoint (GET):**
+```bash
+GET /test?url=https://forum.opencart.com/feed/forum/2&mode=api
+GET /test?url=https://forum.opencart.com/feed/forum/2&mode=native
+```
+
+**Test Endpoint (POST):**
+```bash
+POST /test
+Content-Type: application/json
+
+{
+  "url": "https://forum.opencart.com/feed/forum/2",
+  "mode": "api"
+}
+```
+
+#### Example Requests
+
+**Using curl:**
+```bash
+# Health check
+curl https://your-render-url.onrender.com/health
+
+# Test with API mode
+curl "https://your-render-url.onrender.com/test?url=https://forum.opencart.com/feed/forum/2&mode=api"
+
+# Test with native proxy mode
+curl "https://your-render-url.onrender.com/test?url=https://forum.opencart.com/feed/forum/2&mode=native"
+
+# POST request
+curl -X POST https://your-render-url.onrender.com/test \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://forum.opencart.com/feed/forum/2", "mode": "api"}'
+```
+
+**Using browser:**
+```
+https://your-render-url.onrender.com/test?url=https://forum.opencart.com/feed/forum/2&mode=api
+```
+
+## Response Format
+
+```json
+{
+  "mode": "api",
+  "url": "https://forum.opencart.com/feed/forum/2",
+  "success": true,
+  "status": 200,
+  "contentLength": 12345,
+  "contentPreview": "<?xml version=\"1.0\"...",
+  "isXml": true,
+  "hasCloudflareChallenge": false,
+  "logs": [...]
+}
 ```
 
 ## Options
@@ -76,6 +152,17 @@ curl -i --proxy brd.superproxy.io:33335 \
   --proxy-user brd-customer-hl_7342b85c-zone-web_unlocker1:gp2p3zbiz07q -k \
   "https://forum.opencart.com/feed/forum/2"
 ```
+
+## Deployment to Render.com
+
+1. Connect your GitHub repository to Render
+2. Set environment variables in Render dashboard:
+   - `BRIGHT_DATA_API_KEY`
+   - `BRIGHT_DATA_UNLOCKER_ZONE` (optional, defaults to `web_unlocker1`)
+   - `BRIGHT_DATA_UNLOCKER_PROXY_USERNAME` (for native mode)
+   - `BRIGHT_DATA_UNLOCKER_PROXY_PASSWORD` (for native mode)
+3. Render will automatically detect `package.json` and run `npm start`
+4. Your service will be available at `https://your-service.onrender.com`
 
 ## References
 

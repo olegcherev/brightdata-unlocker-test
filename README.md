@@ -68,15 +68,34 @@ The server will run on port 3000 (or PORT environment variable).
 GET /health
 ```
 
-**Test Endpoint (GET):**
+**Test Endpoint (GET)** - Returns JSON with preview (or full content when `full=true`):
 ```bash
 GET /test?url=https://forum.opencart.com/feed/forum/2&mode=api
 GET /test?url=https://forum.opencart.com/feed/forum/2&mode=native
+GET /test?url=https://forum.opencart.com/feed/forum/2&mode=api&full=true   # Include full content in JSON
+```
+
+**Fetch Endpoint (GET)** - Returns **full raw content** (XML, HTML, etc.):
+```bash
+GET /fetch?url=https://forum.opencart.com/feed/forum/2&mode=api
+GET /fetch?url=https://forum.opencart.com/feed/forum/2&mode=native
 ```
 
 **Test Endpoint (POST):**
 ```bash
 POST /test
+Content-Type: application/json
+
+{
+  "url": "https://forum.opencart.com/feed/forum/2",
+  "mode": "api",
+  "full": true   // optional - include full content in response
+}
+```
+
+**Fetch Endpoint (POST):**
+```bash
+POST /fetch
 Content-Type: application/json
 
 {

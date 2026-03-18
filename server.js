@@ -95,7 +95,6 @@ async function fetchContent(url, mode) {
       },
       timeout: 120_000,
       validateStatus: () => true,
-      responseType: 'text',
       maxRedirects: 5
     });
     
